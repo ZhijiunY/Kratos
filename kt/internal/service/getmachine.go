@@ -37,7 +37,7 @@ package service
 import (
 	"context"
 
-	v1 "kt/api/helloworld/v1"
+	v1 "kt/api/machine/v1"
 	"kt/internal/biz"
 )
 

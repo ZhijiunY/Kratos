@@ -62,10 +62,10 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"kt/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"gorm.io/gorm"
 )
 
 type machineRepo struct {
@@ -80,13 +80,27 @@ func NewMachineRepo(data *Data, logger log.Logger) biz.MachineRepo {
 	}
 }
 
-func (r *machineRepo) GetMachine(ctx context.Context, machineID string) (*biz.Machine, error) {
-	var machine biz.Machine
-	if err := r.data.db.Where("id = ?", machineID).First(&machine).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, err
-		}
-		return nil, err
+// func (r *machineRepo) GetMachine(ctx context.Context, machineID string) (*biz.Machine, error) {
+// 	var machine biz.Machine
+// 	if err := r.data.db.Where("id = ?", machineID).First(&machine).Error; err != nil {
+// 		if err == gorm.ErrRecordNotFound {
+// 			return nil, err
+// 		}
+// 		return nil, err
+// 	}
+// 	return &machine, nil
+// }
+
+func (u *machineRepo) GetMachine(ctx context.Context, machineID string) (*biz.Machine, error) {
+	if u.data == nil || u.data.db == nil {
+		return nil, fmt.Errorf("database connection is not initialized")
 	}
+
+	var machine biz.Machine
+	result := u.data.db.Where("id = ?", machineID).First(&machine)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
 	return &machine, nil
 }

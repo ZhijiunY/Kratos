@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.7.3
 // - protoc             v5.26.1
-// source: helloworld/v1/machine.proto
+// source: machine/v1/machine.proto
 
 package v1
 
